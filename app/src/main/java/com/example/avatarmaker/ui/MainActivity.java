@@ -19,24 +19,18 @@ public class MainActivity extends AppCompatActivity implements MasterListFragmen
     private int bodyIndex;
     private int legIndex;
 
-    private boolean mTwoPane;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if(findViewById(R.id.android_me_linear_layout) != null) {
-            // This LinearLayout will only initially exist in the two-pane tablet case
-            mTwoPane = true;
 
             // Change the GridView to space out the images more on tablet
             GridView gridView = (GridView) findViewById(R.id.images_grid_view);
-            gridView.setNumColumns(2);
 
             // Getting rid of the "Next" button that appears on phones for launching a separate activity
-            Button nextButton = (Button) findViewById(R.id.next_button);
-            nextButton.setVisibility(View.GONE);
+
 
             if(savedInstanceState == null) {
                 // In two-pane mode, add initial BodyPartFragments to the screen
@@ -64,20 +58,14 @@ public class MainActivity extends AppCompatActivity implements MasterListFragmen
                         .add(R.id.leg_container, legFragment)
                         .commit();
             }
-        } else {
-            // We're in single-pane mode and displaying fragments on a phone in separate activities
-            mTwoPane = false;
-        }
-
     }
 
     public void  onImageSelected(int position){
-        Toast.makeText(this,"Positon Clicked = " + position,Toast.LENGTH_SHORT).show();
 
         int bodyPartNumber = position/12;
         int listIndex = position - 12 * bodyPartNumber;
 
-        if (mTwoPane) {
+        //if (mTwoPane) {
             // Create two=pane interaction
 
             BodyPartFragment newFragment = new BodyPartFragment();
@@ -111,39 +99,6 @@ public class MainActivity extends AppCompatActivity implements MasterListFragmen
                 default:
                     break;
             }
-        }
-        else {
-            switch (bodyPartNumber) {
-                case 0:
-                    headIndex = listIndex;
-                    break;
-                case 1:
-                    bodyIndex = listIndex;
-                    break;
-                case 2:
-                    legIndex = listIndex;
-                    break;
-                default:
-                    break;
-            }
-        }
 
-        Bundle b = new Bundle();
-
-        b.putInt("headIndex",headIndex);
-        b.putInt("bodyIndex",bodyIndex);
-        b.putInt("legIndex",legIndex);
-
-        final Intent intent = new Intent(this,AvatarMakerActivity.class);
-        intent.putExtras(b);
-
-        Button nextButton = (Button) findViewById(R.id.next_button);
-
-        nextButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(intent);
-            }
-        });
     }
 }

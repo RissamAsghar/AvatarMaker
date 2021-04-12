@@ -87,6 +87,8 @@ public class BodyPartFragment extends Fragment {
 
        if(mImageIds != null){
            imageView.setImageResource(mImageIds.get(mListIndex));
+           imageView.setAdjustViewBounds(true);
+           imageView.setScaleType(ImageView.ScaleType.FIT_XY);
 
            imageView.setOnClickListener(new View.OnClickListener() {
                @Override
